@@ -1,0 +1,13 @@
+Package: SC2P
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.3.1), Biobase, limma
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+NeedsCompilation: no
+Packaged: 2017-03-29 01:14:45 UTC; yzhang
+Author: First Last [aut, cre]
+Maintainer: First Last <first.last@example.com>

@@ -1,0 +1,125 @@
+---
+title: "**SC2P: Two-phase differential expression for single-cell RNA-seq**"
+author: "**Zhijin Wu, Department of Biostatistics, Brown University**"
+output: rmarkdown::pdf_document
+vignette: >
+  %\VignetteIndexEntry{SC2P: Two-phase differential expression for single-cell RNA-seq}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+```
+
+
+`SC2P` is a package designed for testing differential expression (DE) for data from 
+single-cell RNA-seq experiment. It provides functionalities for testing DE in two phases:
+(1) phase transition (difference in the probabilities of being expressed); and 
+(2) magnitude tuning (difference in the levels of expression once the gene is on). 
+
+
+## 1. Introduction
+
+Single-cell RNA-sequencing (scRNA-seq) has emerged recently as a 
+powerful technology to investigate transcriptomic variation 
+at the individual cell level. Compared to traditional ***bulk*** RNA-seq, scRNA-seq reveals much detailed information for inter-cellular heterogeneities. 
+scRNA-seq data show clear evidence of binary status of transcription, which we refer to as ***phases*** in transcription: **Phase I** corresponds to 
+low level non-specific transcription (for example, as a result of random initiation), and **Phase II** corresponds to targeted specific transcription. The regulation of transcription includes a phase transition between Phase I to Phase II, as well as continuous regulation within Phase II. Both are important regulatory mechanisms that need to be identified in the DE analysis. 
+
+The **SC2P** package identify DE genes in two phases seperately. It implements a rigorous statistical method to determine the phases for all genes in all cells in a data-driven way, with consideration of cell- and gene-specific characteristics. Compared with methods using an *ad hoc* thresholds to determine phases, SC2P achieves better sensitivity and accuracy. 
+
+
+
+## 2. Use SC2P
+
+SC2P starts from a count matrix for gene expressionsm, and a data frame for cell information. In the count matrix, each row corresponds to a gene and each column corresponds to a cell. Each row of the cell information data frame contains the annotation for a cell. The number of columns of the count matrix and the number of rows for the cell data frame must match. 
+Below we will use a small part of a public human brain dataset (GSE67835) to illustrate the workflow of SC2P.  The data is distributed with SC2P as `brain_scRNAseq`.
+
+
+**1. Load library and example data**
+
+```{r, message=FALSE, warning=FALSE}
+library(SC2P)
+data(brain_scRNAseq)
+```
+
+
+**2. Create an `ExpressionSet` object out of the count matrix and cell information data frame.** 
+
+
+```{r, message=TRUE, warning=FALSE}
+colnames(Y) <- rownames(design)
+phenoData <- new("AnnotatedDataFrame", data=design)
+eset <- ExpressionSet(assayData=Y, phenoData=phenoData)
+eset
+```
+
+**3.  estimate the phases for all genes in all cells using `eset2Phase` function.** This returns an object of `sc2pSet`. 
+
+```{r, message=TRUE, warning=FALSE}
+data <- eset2Phase(eset)
+data
+```
+
+The phase estimation result can be visualized using `zyPlot` function, which plots the posterior probability of being expressed versus log expression. Two groups will be shown in different colors. 
+```{r, message=TRUE, warning=FALSE, fig.width=4, fig.height=4, fig.align="center"}
+zyPlot(rownames(data)[1], data, group.name="celltype")
+```
+
+
+
+**4. test DE in two phases using `twoPhaseDE` function.**  
+
+Here 
+- `design` is a character vector of variable names in pData(norm2) to provide regression covariates in the DE test. 
+- `test.which` is an integer that points to the location of the to-be-tested binary variable in argument `design`.
+- `offset` indicates the method to compute normalization factor. 
+
+
+```{r, message=TRUE, warning=FALSE}
+de.sc2p <- twoPhaseDE(data, design="celltype", test.which=1, offset="sf")
+```
+
+The function returns a data frame, each row is for a gene. The rows are sorted by the gene name, not significance level. 
+
+
+**5. Top ranked genes can be obtained using `topGene` function, and visualized by `visGene` function.**
+
+ There are differnt options in `topGene`: 
+
+- To list the top 5 DE genes in phase I:
+```{r, message=TRUE, warning=FALSE}
+ topGene(de.sc2p, phase=1, number=5)
+```
+
+- To list the top 5 DE genes in phase II:
+```{r, message=TRUE, warning=FALSE}
+ topGene(de.sc2p, phase=2, number=5)
+```
+- To list the top 5 DE genes in both phases:
+
+```{r, message=TRUE, warning=FALSE}
+topGene(de.sc2p, phase="both", number=5)
+```
+
+
+
+To visualize expression distribution using `visGene` function:
+
+- Top DE gene in phase I
+```{r, message=TRUE, warning=FALSE, fig.width=4, fig.height=4, fig.align="center"}
+visGene(topGene(de.sc2p, 1)$Gene.name[1], data, group.name="celltype", add.text=FALSE)
+```
+
+
+-  Top DE gene in phase II
+```{r, message=TRUE, warning=FALSE, fig.width=4, fig.height=4,fig.align="center"}
+visGene(topGene(de.sc2p, 2)$Gene.name[1], data, group.name="celltype", add.text=FALSE)
+```
+
+
+## 3. Session Info
+```{r}
+sessionInfo()
+```
