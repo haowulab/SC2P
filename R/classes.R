@@ -1,0 +1,27 @@
+##################################################################
+## Define sc2pSet class mimicing ExpressionSet class from Biobase
+##################################################################
+
+setClass("sc2pSet", contains="eSet",
+         prototype = prototype(
+         new("VersionedBiobase",
+             versions=c(classVersion("eSet"), sc2pSet="1.0.0"))))
+
+
+setMethod("initialize", "sc2pSet",
+          function(.Object,
+                   assayData = assayDataNew(exprs=exprs, Z=Z, Offset=Offset),
+                   exprs=new("matrix"),
+                   Z=new("matrix"),
+                   Offset=new("matrix"),
+                   ...){
+              if (!missing(assayData) && !missing(Z) && dim(assayData) != dim(Z)){
+                  stop("Z is not in the same dimensions as assayData")
+              }
+              callNextMethod(.Object, assayData=assayData, ...)
+          })
+
+setValidity("sc2pSet", function(object){
+    assayDataValidMembers(assayData(object), c("Z", "Offset"))
+})
+

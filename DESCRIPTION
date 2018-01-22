@@ -1,0 +1,13 @@
+Package: SC2P
+Title: Two phase differential expression for single-cell RNA-seq
+Version: 1.0.2
+Author: Zhijin (Jean) Wu <zwu@stat.brown.edu>, Jamie (Yi) Zhang <yi_zhang@brown.edu>, Hao Wu<hao.wu@emory.edu>
+Maintainer: Zhijin (Jean) Wu <zwu@stat.brown.edu>, Hao Wu <hao.wu@emory.edu>
+Description: This package performs differential expression analysis for singel-cell RNA-seq
+			 data in two phases: phase transition (probability of being expressed),
+			 and magnitude tuning (levels of expression once the gene is on).
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Depends: R (>= 3.3.0), Biobase, limma
+License: GPL
+biocViews: Sequencing, RNASeq, DifferentialExpression
