@@ -13,7 +13,7 @@ zyPlot(name, sc2p.obj, group.name, log2scale = TRUE, showname = TRUE, annotation
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{name}{Character for the name of a gene.}
+  \item{name}{Gene name. This should either match one of the \code{featureNames} of the \code{sc2p.obj}, or match a name in a separate \code{annotation} vector}
   \item{sc2p.obj}{An object of sc2pSet, result from the eset2Phase function.
   }
   \item{group.name}{Character for the name of factors indicating the
@@ -26,8 +26,7 @@ zyPlot(name, sc2p.obj, group.name, log2scale = TRUE, showname = TRUE, annotation
   \item{showname}{Logical to indicate whether to show the name of genes
 	as the tile of the figure.
   }
-  \item{annotation}{WHAT IS THIS?? 
-  }
+  \item{annotation}{A character vector of alternative gene names, with length equal the number of genes in the \code{sc2p.obj}. If left as default \code{NULL}, the \code{featureNames} of the \code{sc2p.obj} is used. 
 }
 \details{
 In general, the probability of being expressed for a gene is higher when
@@ -44,7 +43,7 @@ expression level.
 }
 
 \author{
-  Zhijin (Jean) Wu <zwu@stat.brown.edu>
+ Jamie (Yi) Zhang <yi_zhang@brown.edu>
 }
 
 \seealso{

@@ -15,9 +15,9 @@ topGene <- function(de.obj, phase="both", number=20, p.value=0.05,
     coef2 <- round(de.obj[, "Ph2.coef"],2)
     Phase1 <- ifelse(fdr1 < p.value, "Y", "N")
     Phase2 <- ifelse(fdr2 < p.value, "Y", "N")
-    category <- ifelse(coef1>1 & coef2>0, "++",
-                       ifelse(coef1>1 & coef2<0, "+-",
-                              ifelse(coef1<1 & coef2>0, "-+", "--")))
+    category <- ifelse(coef1>0 & coef2>0, "++",
+                       ifelse(coef1>0 & coef2<0, "+-",
+                              ifelse(coef1<0 & coef2>0, "-+", "--")))
 
     DF <- data.frame(Gene.name=Gene.name,
                      p1=de.obj[ ,"p1"], p2=de.obj[ ,"p2"],
@@ -40,7 +40,7 @@ topGene <- function(de.obj, phase="both", number=20, p.value=0.05,
     ord <- switch(phase,
                   "1"  = order(DF$Ph1.fdr, DF$Ph2.fdr),
                   "2" = order(DF$Ph2.fdr, DF$Ph1.fdr),
-                  "both" = order(DF$Ph1.fdr, DF$Ph2.fdr))
+                  "both" = order(DF$Comb.fdr))
     glist <- DF[ord,]
     rownames(glist) <- NULL
     ## if (nrow(glist)==0) stop("No gene satisfies the criteria, try a larger FDR")

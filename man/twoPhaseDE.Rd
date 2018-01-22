@@ -31,9 +31,15 @@ twoPhaseDE(sc2p.obj, design, test.which, low.prob = 0.99, offset = c("SC2P", "sf
 	xxxxxxxxxxxxxx What's this???
   }
   \item{offset}{
-	Indicates the method to compute normalization factor. 'SC2P' is the
-	normalization procedure provided by SC2P. 'sf' uses the total counts
-	in cells as normalizing constant.}
+	The normalization factor, or indicator for method to compute
+	normalization factor. Valid entry includes:
+	(1) a character, where 'SC2P' indicate to use the	normalization
+	procedure provided by SC2P. 'sf' uses the total counts. (2) a
+	numeric vector, where each represent the normalization factor for a
+	cell. The length of the vector must equal to the number of
+	cells. (3) a numeric matrix of the same dimension as the input
+	expression data, where each gene in each cell has a seperate
+	normalization factor.}
 }
 
 \value{

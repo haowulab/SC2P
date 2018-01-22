@@ -37,9 +37,14 @@ eset2Phase(eset, low.prob = 0.99)
 }
 
 \value{
-  An object of sc2pSet, which is an extension of ExpressionSet.
-}
+  An object of sc2pSet, which is an extension of ExpressionSet. Slots in the sc2pSet include the following
+  \item{assayData}{This includes three matrices of the same dimension as the original data in the input \code{eset}. The normalization \code{Offset} that counts for technical bias such as library size, the estimated probability in Phase 2 (\code{Z}) and the input counts \code{exprs}.}
+  \item{phenoData}{This expanded phenoData includes the same information for each cell(sample) as in \code{eset}, with additional Phase I parameters for each cell.}
+  \item{featureData}{This contains the Phase II parameters in the lognormal model for each gene.}
+\code{annotation}{Inherited from the input \code{eset}}
+\code{experimentData}{Inherited from the input \code{eset}}
 
+} 
 
 \author{
 Zhijin (Jean) Wu <zwu@stat.brown.edu>

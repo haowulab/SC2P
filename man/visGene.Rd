@@ -19,20 +19,17 @@ visGene(names, sc2p.obj, group.name = NULL, low.prob = 0.99, show.name = TRUE, s
 	experimental conditions. This has to be the name of a column in
     pData(sc2p.obj) data frame.
 }
-  \item{low.prob}{
-	?????????????
+  \item{low.prob}{The cutoff to classify a gene to Phase 1 or 2 based on posterior Prob(phase 2).
   }
   \item{show.name}{Logical to indicate whether to show the name of genes
-	as the tileof the figure.
+	as the title of the figure.
   }
-  \item{show.points}{
-	???????????????????
+  \item{show.points}{Logical value. If \code{TRUE}, counts in individual cells with expression in Phase 2 are plotted in addition to summary statistics.
+ 
   }
-  \item{all.points}{
-	???????????????????
+  \item{all.points}{ Logical value. If \code{TRUE}, gene counts that are classified as in Phase I are plotted as well. 
   }
-  \item{annotation}{
-	???????????????????
+  \item{annotation}{If the user perfer a different naming system for the genes other than the one used in the object \code{sc2p.obj}, a vector of alternative gene names can be provided here.
   }
 }
 
