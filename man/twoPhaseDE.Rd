@@ -27,8 +27,7 @@ twoPhaseDE(sc2p.obj, design, test.which, low.prob = 0.99, offset = c("SC2P", "sf
 
   \item{test.which}{An integer for the index of the
 	to-be-tested binary variable in argument 'design'.}
-  \item{low.prob}{
-	xxxxxxxxxxxxxx What's this???
+  \item{low.prob}{The cutoff used in classifying genes to Phase 2. Genes with posterior probability in Phase 2 greater than \code{low.prob} is considered in Phase 2.  
   }
   \item{offset}{
 	The normalization factor, or indicator for method to compute
@@ -44,17 +43,17 @@ twoPhaseDE(sc2p.obj, design, test.which, low.prob = 0.99, offset = c("SC2P", "sf
 
 \value{
   A data frame with following columns:
-  \item{p1}{}
-  \item{p2}{}
-  \item{Ph1.coef}{}
-  \item{Ph1.pval}{}
-  \item{m1}{}
-  \item{m2}{}
-  \item{Ph2.coef}{}
-  \item{Ph2.ci.lo}{}
-  \item{Ph2.ci.hi}{}
-  \item{Ph2.pval}{}
-  \item{logFC}{Log fold change}
+  \item{p1}{The Phase 2 proportion in Group 1. }
+  \item{p2}{The Phase 2 proportion in Group 2.}
+  \item{Ph1.coef}{Log Odds Ratio in testing DE in the form of phase change.}
+  \item{Ph1.pval}{The p-value in testing DE in the form of phase change.}
+  \item{m1}{Estiamted conditional mean expression in Group 1}
+  \item{m2}{Estiamted conditional mean expression in Group 2}
+  \item{Ph2.coef}{Conditional log2 fold change  }
+  \item{Ph2.ci.lo}{The lower end of 95\% confidence interval for the conditional log fold change. }
+  \item{Ph2.ci.hi}{The upper end of 95\% confidence interval for the conditional log fold change.}
+  \item{Ph2.pval}{The p-value in testing DE in the form of magnitude change within Phase 2. }
+  \item{logFC}{Marginal log2 fold change}
 
   The data frame is sorted by gene names alphabetically. 
 }
