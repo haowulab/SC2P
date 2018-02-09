@@ -1,18 +1,35 @@
 **SC2P: Two-phase differential expression for single-cell RNA-seq**
 ================
-**Zhijin Wu, Department of Biostatistics, Brown University**
 
 `SC2P` is a package designed for testing differential expression (DE) for data from single-cell RNA-seq experiment. It provides functionalities for testing DE in two phases: (1) phase transition (difference in the probabilities of being expressed); and (2) magnitude tuning (difference in the levels of expression once the gene is on).
 
-1. Introduction
----------------
+##1. Introduction
 
 Single-cell RNA-sequencing (scRNA-seq) has emerged recently as a powerful technology to investigate transcriptomic variation at the individual cell level. Compared to traditional ***bulk*** RNA-seq, scRNA-seq reveals much detailed information for inter-cellular heterogeneities. scRNA-seq data show clear evidence of binary status of transcription, which we refer to as ***phases*** in transcription: **Phase I** corresponds to low level non-specific transcription (for example, as a result of random initiation), and **Phase II** corresponds to targeted specific transcription. The regulation of transcription includes a phase transition between Phase I to Phase II, as well as continuous regulation within Phase II. Both are important regulatory mechanisms that need to be identified in the DE analysis.
 
 The **SC2P** package identify DE genes in two phases seperately. It implements a rigorous statistical method to determine the phases for all genes in all cells in a data-driven way, with consideration of cell- and gene-specific characteristics. Compared with methods using an *ad hoc* thresholds to determine phases, SC2P achieves better sensitivity and accuracy.
 
-2. Use SC2P
------------
+##2. Installation
+
+Run following commands in R:
+
+```
+library(devtools)
+install_github("haowulab/SC2P", build_vignettes=TRUE)
+```
+
+The second line might take a little time and install some extra packages for building the package vignette.
+
+To view the package vignette, do
+
+```
+library(SC2P)
+vignette("SC2P")
+```
+
+The content in this README file is essentially the same as the package vignette.
+
+##3. Use SC2P
 
 SC2P starts from a count matrix for gene expressionsm, and a data frame for cell information. In the count matrix, each row corresponds to a gene and each column corresponds to a cell. Each row of the cell information data frame contains the annotation for a cell. The number of columns of the count matrix and the number of rows for the cell data frame must match. Below we will use a small part of a public human brain dataset (GSE67835) to illustrate the workflow of SC2P. The data is distributed with SC2P as `brain_scRNAseq`.
 
@@ -74,7 +91,7 @@ The phase estimation result can be visualized using `zyPlot` function, which plo
 zyPlot(rownames(data)[1], data, group.name="celltype")
 ```
 
-<img src="SC2P_files/figure-markdown_github/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="figures/zyPlot.png" style="display: block; margin: auto;" />
 
 **4. test DE in two phases using `twoPhaseDE` function.**
 
@@ -155,7 +172,7 @@ To visualize expression distribution using `visGene` function:
 visGene(topGene(de.sc2p, 1)$Gene.name[1], data, group.name="celltype")
 ```
 
-<img src="SC2P_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="figures/topPhase1Gene.png" style="display: block; margin: auto;" />
 
 -   Top DE gene in phase II
 
@@ -163,36 +180,5 @@ visGene(topGene(de.sc2p, 1)$Gene.name[1], data, group.name="celltype")
 visGene(topGene(de.sc2p, 2)$Gene.name[1], data, group.name="celltype")
 ```
 
-<img src="SC2P_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
+<img src="figures/topPhase2Gene.png" style="display: block; margin: auto;" />
 
-3. Session Info
----------------
-
-``` r
-sessionInfo()
-```
-
-    ## R version 3.4.1 (2017-06-30)
-    ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
-    ## Running under: macOS High Sierra 10.13.2
-    ## 
-    ## Matrix products: default
-    ## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
-    ## 
-    ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-    ## 
-    ## attached base packages:
-    ## [1] parallel  stats     graphics  grDevices utils     datasets  methods  
-    ## [8] base     
-    ## 
-    ## other attached packages:
-    ## [1] SC2P_1.0.2          limma_3.32.10       Biobase_2.38.0     
-    ## [4] BiocGenerics_0.24.0 knitr_1.19         
-    ## 
-    ## loaded via a namespace (and not attached):
-    ##  [1] Rcpp_0.12.14    digest_0.6.14   rprojroot_1.2   backports_1.1.1
-    ##  [5] magrittr_1.5    evaluate_0.10.1 stringi_1.1.5   rmarkdown_1.8  
-    ##  [9] tools_3.4.1     stringr_1.2.0   yaml_2.1.16     compiler_3.4.1 
-    ## [13] htmltools_0.3.6
