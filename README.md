@@ -10,7 +10,8 @@ Single-cell RNA-sequencing (scRNA-seq) has emerged recently as a powerful techno
 
 The **SC2P** package identify DE genes in two phases seperately. It implements a rigorous statistical method to determine the phases for all genes in all cells in a data-driven way, with consideration of cell- and gene-specific characteristics. Compared with methods using an *ad hoc* thresholds to determine phases, SC2P achieves better sensitivity and accuracy.
 
-##2. Installation
+2. Installation
+---------------
 
 Run following commands in R:
 
