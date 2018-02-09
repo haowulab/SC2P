@@ -31,7 +31,8 @@ vignette("SC2P")
 
 The content in this README file is essentially the same as the package vignette.
 
-##3. Use SC2P
+**3. Use SC2P**
+------------
 
 SC2P starts from a count matrix for gene expressionsm, and a data frame for cell information. In the count matrix, each row corresponds to a gene and each column corresponds to a cell. Each row of the cell information data frame contains the annotation for a cell. The number of columns of the count matrix and the number of rows for the cell data frame must match. Below we will use a small part of a public human brain dataset (GSE67835) to illustrate the workflow of SC2P. The data is distributed with SC2P as `brain_scRNAseq`.
 
