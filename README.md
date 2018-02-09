@@ -4,7 +4,7 @@
 `SC2P` is a package designed for testing differential expression (DE) for data from single-cell RNA-seq experiment. It provides functionalities for testing DE in two phases: (1) phase transition (difference in the probabilities of being expressed); and (2) magnitude tuning (difference in the levels of expression once the gene is on).
 
 **1. Introduction**
-================
+-------------------
 
 Single-cell RNA-sequencing (scRNA-seq) has emerged recently as a powerful technology to investigate transcriptomic variation at the individual cell level. Compared to traditional ***bulk*** RNA-seq, scRNA-seq reveals much detailed information for inter-cellular heterogeneities. scRNA-seq data show clear evidence of binary status of transcription, which we refer to as ***phases*** in transcription: **Phase I** corresponds to low level non-specific transcription (for example, as a result of random initiation), and **Phase II** corresponds to targeted specific transcription. The regulation of transcription includes a phase transition between Phase I to Phase II, as well as continuous regulation within Phase II. Both are important regulatory mechanisms that need to be identified in the DE analysis.
 
