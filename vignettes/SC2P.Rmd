@@ -1,22 +1,27 @@
 ---
 title: "**SC2P: Two-phase differential expression for single-cell RNA-seq**"
 author: "**Zhijin Wu, Department of Biostatistics, Brown University**"
-output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{SC2P: Two-phase differential expression for single-cell RNA-seq}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
+output: rmarkdown::pdf_document
 ---
 
 ```{r setup, include=FALSE}
 library(knitr)
 ```
 
+\tableofcontents
 
+\vspace{.1in}
+
+\begin{abstract}
 `SC2P` is a package designed for testing differential expression (DE) for data from 
 single-cell RNA-seq experiment. It provides functionalities for testing DE in two phases:
 (1) phase transition (difference in the probabilities of being expressed); and 
 (2) magnitude tuning (difference in the levels of expression once the gene is on). 
+\end{abstract}
 
 
 ## 1. Introduction

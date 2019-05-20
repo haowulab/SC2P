@@ -12,6 +12,7 @@ vignette: >
 library(knitr)
 ```
 
+\tableofcontents
 
 `SC2P` is a package designed for testing differential expression (DE) for data from 
 single-cell RNA-seq experiment. It provides functionalities for testing DE in two phases:
@@ -109,13 +110,13 @@ To visualize expression distribution using `visGene` function:
 
 - Top DE gene in phase I
 ```{r, message=TRUE, warning=FALSE, fig.width=4, fig.height=4, fig.align="center"}
-visGene(topGene(de.sc2p, 1)$Gene.name[1], data, group.name="celltype", add.text=FALSE)
+visGene(topGene(de.sc2p, 1)$Gene.name[1], data, group.name="celltype")
 ```
 
 
 -  Top DE gene in phase II
 ```{r, message=TRUE, warning=FALSE, fig.width=4, fig.height=4,fig.align="center"}
-visGene(topGene(de.sc2p, 2)$Gene.name[1], data, group.name="celltype", add.text=FALSE)
+visGene(topGene(de.sc2p, 2)$Gene.name[1], data, group.name="celltype")
 ```
 
 
