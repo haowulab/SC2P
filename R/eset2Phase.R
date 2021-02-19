@@ -13,15 +13,15 @@ eset2Phase <- function(eset, low.prob=0.99){  ## takes eSet as input
     pi0.hat <- pmin(pi0.hat, 1)
     prob0=pi0.hat*par1[1,]+ pi0.hat*(1-par1[1,])*dpois(0,par1[2,]) ## ZIP prob at 0
 ############################################
-    ## First round 
+    ## First round
 ###########################################
     ## get the 1-low.prob quantile of ZIP
     x0=qpois(pmax(1-(1-low.prob)/(1-par1[1,]),0),par1[2,])
-    Z= sweep(Y,2,x0)>0 # indicate if a gene is > bg 
+    Z= sweep(Y,2,x0)>0 # indicate if a gene is > bg
     L=colSums(Y*Z)/1e6 # so far it is like simple total..
 
     mu.g1=log2(rowSums(Z*Y)/rowSums(sweep(Z,2,L,FUN="*")))
-    mu.g1[is.na(mu.g1)]=0 ## if allZ is 0, it gets NA, 
+    mu.g1[is.na(mu.g1)]=0 ## if allZ is 0, it gets NA,
 ### but we should shrink mu.g1 as well since some mu.g1 is estimated by only a few observations
     ## leave it here for now.
     n.g1=rowSums(Z)
@@ -35,9 +35,9 @@ eset2Phase <- function(eset, low.prob=0.99){  ## takes eSet as input
     ## mad of those res.g1 that are associated with Z==1
     tmp=array(0,dim=c(dim(res.g1),2))
     tmp[,,1]=res.g1;tmp[,,2]=Z
-    sd.g1=apply(tmp,1,function(xx) my.mad(xx[xx[,2]==1,1])) 
+    sd.g1=apply(tmp,1,function(xx) my.mad(xx[xx[,2]==1,1]))
     sd.g1[is.na(sd.g1)]=0## if all bg, there's no info about fg sd
-    ## add a shrinkage for sd.g1 
+    ## add a shrinkage for sd.g1
     sd.prior=squeezeVar(sd.g1^2,n.g1-1)
     sd.g2=sqrt(sd.prior$var.post)
 ####################################### ########
@@ -70,15 +70,20 @@ eset2Phase <- function(eset, low.prob=0.99){  ## takes eSet as input
     for(i in 1:ncol(Y)){
         tmp.y=log2(1+Y[,i])-mu.g2
         subset= post.Z2[,i] > .99
-        lm1 <- loess(tmp.y~mu.g1,
-                     weights=post.Z2[,i]*mu.g2,subset=subset,degree=1,span=.3)
+        ## lm1 <- loess(tmp.y~mu.g1,
+        ##              weights=post.Z2[,i]*mu.g2,subset=subset,degree=1,span=.3)
+        lm1 <- tryCatch(expr = loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
+                        subset = subset, degree = 1, span = span),
+                        error = function(e) loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
+                        subset = subset, degree = 1, span = 0.8))
+
         Offset[subset,i]=lm1$fitted
         ## par(mfrow=c(1,2))
         ## plot(mu.g1, log2(1+Y[,i])-mu.g1, pch=16,cex=.6,ylab="",
         ##      col=rgb(1-post.Z2[,i],0,post.Z2[,i],alpha=rowMeans(post.Z2))
         ##     ,ylim=Ylim,xlim=Xlim,main=i)
         ## points(lm1$x,lm1$fitted,col=5)
-        
+
         ## plot(mu.g1, log2(1+Y[,i])-Offset[,i]-mu.g1, pch=16,cex=.6,ylab="",
         ##      col=rgb(1-post.Z2[,i],0,post.Z2[,i],alpha=rowMeans(post.Z2))
         ##     ,ylim=Ylim,xlim=Xlim,main=i)
@@ -106,7 +111,7 @@ eset2Phase <- function(eset, low.prob=0.99){  ## takes eSet as input
                  "lambda"="mean of background poisson",
                  "L"="foreground library size")
     phenoData <- new("AnnotatedDataFrame", data=pdata2, varMetadata=pvar)
-        
+
     out <- new("sc2pSet", exprs=Y, Z=post.Z2, Offset=Offset,
                phenoData=phenoData,
                featureData=featureData,

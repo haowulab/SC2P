@@ -1,5 +1,5 @@
 ##################################################
-twoPhaseDE0 <- function(Y, Z, X, Offset, test.which, 
+twoPhaseDE0 <- function(Y, Z, X, Offset, test.which,
                         low.prob=.99){
     vars <- colnames(X);  vars0 <- vars[-test.which]
     group <- X[, test.which]
@@ -10,14 +10,16 @@ twoPhaseDE0 <- function(Y, Z, X, Offset, test.which,
     parse1 <- parse(text= paste0("glm(yyy~", paste(vars, collapse="+"),
                         ",data=X, family=binomial)"))
     contrast <- paste0(vars[test.which], levels(group)[Ng])
-    ## ##############################################
+
+    ################################################
     ## phase 1: change of on rate
+    ################################################
     Z1=( Z > low.prob)^2
     ## avgZ=tapply(1:ncol(Z), group, function(ind){
-    ##     rowMeans(Z[,ind]) })  
+    ##     rowMeans(Z[,ind]) })
     ## avgZ=matrix(unlist(avgZ),ncol=Ng)
     n.on=rowSums(Z1)
-    ind=which(n.on > 0 & n.on < ncol(Y)) 
+    ind=which(n.on > 0 & n.on < ncol(Y))
     if (length(vars)==1){ ## single binary variable
         DE.z <- matrix(NA, nrow=nrow(Z), ncol=4)
         rownames(DE.z) <- rownames(Y)
@@ -49,8 +51,10 @@ twoPhaseDE0 <- function(Y, Z, X, Offset, test.which,
         }))
         colnames(DE.z) <- c("Ph1.coef", "Ph1.pval")
     }
-    ## ################################################
+
+    ##################################################
     ## phase 2: conditional FC
+    ################################################
     W <- log2(Y+1) - Offset; W[!Z1] <- NA
     modelX <- eval(parse(text=paste0("model.matrix(~", paste(vars, collapse="+"),
                              ", data=X)")))
