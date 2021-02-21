@@ -70,12 +70,17 @@ eset2Phase <- function(eset, low.prob=0.99){  ## takes eSet as input
     for(i in 1:ncol(Y)){
         tmp.y=log2(1+Y[,i])-mu.g2
         subset= post.Z2[,i] > .99
+        tmp.Z2 = post.Z2[, i]
+
         ## lm1 <- loess(tmp.y~mu.g1,
         ##              weights=post.Z2[,i]*mu.g2,subset=subset,degree=1,span=.3)
-        lm1 <- tryCatch(expr = loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
-                        subset = subset, degree = 1, span = span),
-                        error = function(e) loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
-                        subset = subset, degree = 1, span = 0.8))
+        if (sum(subset) < 2)
+            next
+        else
+            lm1 <- tryCatch(expr = loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
+                            subset = subset, degree = 1, span = span),
+                            error = function(e) loess(tmp.y ~ mu.g1, weights = tmp.Z2 * mu.g2,
+                            subset = subset, degree = 1, span = 0.8))
 
         Offset[subset,i]=lm1$fitted
         ## par(mfrow=c(1,2))
